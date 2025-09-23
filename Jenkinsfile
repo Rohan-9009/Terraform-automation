@@ -15,18 +15,16 @@ pipeline {
          }
         
        
+        stage ("terraform Plan") {
+            steps {
+                sh ("terraform plan") 
+            }
+        }
+
         stage ("Action") {
             steps {
                 echo "Terraform action is --> ${action}"
-                    script {
-                        if (action == 'apply' || action == 'destroy') {
-                            sh "terraform ${action} --auto-approve"
-                        } else if (action == 'plan' || action == 'init') {
-                            sh "terraform ${action}"
-                        } else {
-                            error "Unsupported terraform action: ${action}. Only 'apply', 'destroy', 'plan', and 'init' are allowed."
-                        }
-                    }
+                sh ('terraform ${action} --auto-approve') 
            }
         }
     }
