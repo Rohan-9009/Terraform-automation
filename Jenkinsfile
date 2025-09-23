@@ -21,8 +21,12 @@ pipeline {
                     script {
                         if (action == 'apply' || action == 'destroy') {
                             sh "terraform ${action} --auto-approve"
-                        } else {
+                        } else if (action == 'plan' || action == 'init') {
                             sh "terraform ${action}"
+                        } else {
+                            error "Unsupported terraform action: ${action}. Only 'apply', 'destroy', 'plan', and 'init' are allowed."
+                        }
+                    }
            }
         }
     }
